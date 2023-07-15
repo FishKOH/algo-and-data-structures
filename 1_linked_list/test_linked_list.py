@@ -12,7 +12,7 @@ def to_native_list(linked_list):
 def create_LinkedList(container):
     l = LinkedList()
     for item in container:
-        l.add_in_tail(item)
+        l.add_in_tail(Node(item))
     return l
 
 
@@ -78,79 +78,93 @@ class TestLinkedListFind(unittest.TestCase):
         l = LinkedList()
         self.assertEqual(l.find_all(2), [])
         self.assertEqual(l.find_all(-1), [])
+        
+
 
 class TestLinkedListDelete(unittest.TestCase):
-    @unittest.expectedFailure
+
+    def tearDown(self):
+        fact_tail = None
+        node = self.linked_list.head
+        while node is not None:
+            fact_tail = node;
+            node = node.next
+        self.assertEqual(self.linked_list.tail, fact_tail)
+
     def test_delete_first_at_middle(self):
-        l = create_LinkedList([1,2,2,8])
-        l.delete(2)
-        self.assertIsNotNone(l.head)
-        self.assertIsNotNone(l.tail)
-        self.assertEqual(to_native_list(l), [1,2,8])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1,2,2,8])
+        self.linked_list.delete(2)
+        
+        self.assertIsNotNone(self.linked_list.head)
+        self.assertIsNotNone(self.linked_list.tail)
+        self.assertEqual(to_native_list(self.linked_list), [1,2,8])
+    
     def test_delete_first_at_head(self):
-        l = create_LinkedList([1,2,2,8])
-        l.delete(1)
-        self.assertEqual(l.head.value, 2)
-        self.assertIsNotNone(l.head.next)
-        self.assertIsNotNone(l.tail)
-        self.assertEqual(to_native_list(l), [2,2,8])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1,2,2,8])
+        self.linked_list.delete(1)
+        
+        self.assertEqual(self.linked_list.head.value, 2)
+        self.assertIsNotNone(self.linked_list.head.next)
+        self.assertIsNotNone(self.linked_list.tail)
+        self.assertEqual(to_native_list(self.linked_list), [2,2,8])
+    
     def test_delete_first_at_tail(self):
-        l = create_LinkedList([1,2,2,8])
-        l.delete(8)
-        self.assertIsNotNone(l.head)
-        self.assertEqual(l.tail.value, 2)
-        self.assertIsNone(l.tail.next)
-        self.assertEqual(to_native_list(l), [1,2,2])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1,2,2,8])
+        self.linked_list.delete(8)
+        
+        self.assertIsNotNone(self.linked_list.head)
+        self.assertEqual(self.linked_list.tail.value, 2)
+        self.assertIsNone(self.linked_list.tail.next)
+        self.assertEqual(to_native_list(self.linked_list), [1,2,2])
+    
     def test_delete_not_exist(self):
-        l = create_LinkedList([1,2,2,8])
-        l.delete(4)
-        self.assertIsNone(l.tail.next)
-        self.assertEqual(to_native_list(l), [1,2,2,8])
+        self.linked_list = create_LinkedList([1,2,2,8])
+        self.linked_list.delete(4)
+        
+        self.assertIsNone(self.linked_list.tail.next)
+        self.assertEqual(to_native_list(self.linked_list), [1,2,2,8])
 
     def test_delete_at_empty(self):
-        l = LinkedList()
-        l.delete(1)
-        self.assertIsNone(l.head)
-        self.assertIsNone(l.tail)
-    @unittest.expectedFailure
+        self.linked_list = LinkedList()
+        self.linked_list.delete(1)
+        
+        self.assertIsNone(self.linked_list.head)
+        self.assertIsNone(self.linked_list.tail)
+    
     def test_delete_at_oneitem(self):
-        l = create_LinkedList([1])
-        l.delete(1)
-        self.assertIsNone(l.head)
-        self.assertIsNone(l.tail)
-        self.assertEqual(to_native_list(l), [])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1])
+        self.linked_list.delete(1)
+        
+        self.assertIsNone(self.linked_list.head)
+        self.assertIsNone(self.linked_list.tail)
+        self.assertEqual(to_native_list(self.linked_list), [])
+    
     def test_delete_all_sequently(self):
-        l = create_LinkedList([1,1,1,2,4])
-        l.delete(1, all=True)
-        self.assertEqual(to_native_list(l), [2,4])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1,1,1,2,4])
+        self.linked_list.delete(1, all=True)
+        
+        self.assertEqual(to_native_list(self.linked_list), [2,4])
+    
     def test_delete_all_nonsequently(self):
-        l = create_LinkedList([1,2,1,4,1])
-        l.delete(1, all=True)
-        self.assertEqual(to_native_list(l), [2,4])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1,2,1,4,1])
+        self.linked_list.delete(1, all=True)
+        
+        self.assertEqual(to_native_list(self.linked_list), [2,4])
+    
     def test_delete_all_same_items(self):
-        l = create_LinkedList([1,1,1,1,1])
-        l.delete(1, all=True)
-        self.assertIsNone(l.head)
-        self.assertIsNone(l.tail)
-        self.assertEqual(to_native_list(l), [])
-    @unittest.expectedFailure
+        self.linked_list = create_LinkedList([1,1,1,1,1])
+        self.linked_list.delete(1, all=True)
+        
+        self.assertIsNone(self.linked_list.head)
+        self.assertIsNone(self.linked_list.tail)
+        self.assertEqual(to_native_list(self.linked_list), [])
+    
     def test_delete_all_same_items_except_one(self):
-        l = create_LinkedList([1,1,2,1,1,1])
-        l.delete(1, all=True)
-        self.assertIsNone(l.tail.next)
-        self.assertEqual(to_native_list(l), [2])
-    
-    
-    #middle head tail
-    #exist not exist
-    #many empty single
-    #all sequently / not sequently / all deleted / all-1 deleted
+        self.linked_list = create_LinkedList([1,1,2,1,1,1])
+        self.linked_list.delete(1, all=True)
+        
+        self.assertIsNone(self.linked_list.tail.next)
+        self.assertEqual(to_native_list(self.linked_list), [2])
     
 if __name__ == '__main__':
     unittest.main()

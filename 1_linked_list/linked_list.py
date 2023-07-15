@@ -41,7 +41,28 @@ class LinkedList:
         return finded_nodes
 
     def delete(self, val, all=False):
-        pass # здесь будет ваш код
+        node = self.head
+        prev_node = None
+        while node is not None:
+            next_node = node.next
+            if node.value == val:
+                if self.head == self.tail: # singleitem
+                    self.head = None
+                    self.tail = None
+                elif next_node is None: # node is tail
+                    prev_node.next = next_node
+                    self.tail = prev_node
+                else:
+                    if self.head == node:
+                        self.head = next_node
+                    else:
+                        prev_node.next = next_node
+                        
+                if not all:
+                    return
+            else:
+                prev_node = node
+            node = next_node
 
     def clean(self):
         pass # здесь будет ваш код
