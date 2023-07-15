@@ -165,6 +165,95 @@ class TestLinkedListDelete(unittest.TestCase):
         
         self.assertIsNone(self.linked_list.tail.next)
         self.assertEqual(to_native_list(self.linked_list), [2])
+
+class TestLinkedListClean(unittest.TestCase):
+
+    def test_clean(self):
+        l = create_LinkedList([1,2,4,8,16])
+        l.clean()
+        
+        self.assertIsNone(l.head)
+        self.assertIsNone(l.tail)
+
+    def test_clean_empty(self):
+        l = LinkedList()
+        l.clean()
+        
+        self.assertIsNone(l.head)
+        self.assertIsNone(l.tail)        
+
+class TestLinkedListLen(unittest.TestCase):
+
+    def test_clean(self):
+        l = create_LinkedList([1,2,4,8,16])
+        self.assertEqual(l.len(), 5)
+
+    def test_clean_empty(self):
+        l = LinkedList()
+        self.assertEqual(l.len(), 0)
+
+class TestLinkedListInsert(unittest.TestCase):
+
+    def tearDown(self):
+        fact_tail = None
+        node = self.linked_list.head
+        while node is not None:
+            fact_tail = node;
+            node = node.next
+        self.assertEqual(self.linked_list.tail, fact_tail)
+
+    def test_insert_at_middle(self):
+        self.linked_list = LinkedList()
+        node1 = Node(-1)
+        node2 = Node(0)
+        node3 = Node(1)
+        self.linked_list.add_in_tail(node1)
+        self.linked_list.add_in_tail(node2)
+        self.linked_list.add_in_tail(node3)
+        self.linked_list.insert(node1, Node(5))
+        self.assertEqual(to_native_list(self.linked_list), [-1, 5, 0, 1])
+
+    def test_insert_at_tail(self):
+        self.linked_list = LinkedList()
+        node1 = Node(-1)
+        node2 = Node(0)
+        node3 = Node(1)
+        self.linked_list.add_in_tail(node1)
+        self.linked_list.add_in_tail(node2)
+        self.linked_list.add_in_tail(node3)
+        self.linked_list.insert(node3, Node(5))
+        self.assertIsNone(self.linked_list.tail.next)
+        self.assertEqual(to_native_list(self.linked_list), [-1, 0, 1, 5])
+    
+    def test_insert_at_head(self):
+        self.linked_list = LinkedList()
+        node1 = Node(-1)
+        node2 = Node(0)
+        node3 = Node(1)
+        self.linked_list.add_in_tail(node1)
+        self.linked_list.add_in_tail(node2)
+        self.linked_list.add_in_tail(node3)
+        self.linked_list.insert(None, Node(5))
+        self.assertEqual(to_native_list(self.linked_list), [5, -1, 0, 1])
+    
+    def test_insert_at_empty(self):
+        self.linked_list = LinkedList()
+        self.linked_list.insert(None, Node(5))
+        self.assertEqual(to_native_list(self.linked_list), [5])
+    
+    def test_insert_at_head_singleitem(self):
+        self.linked_list = LinkedList()
+        node1 = Node(42)
+        self.linked_list.add_in_tail(node1)
+        self.linked_list.insert(None, Node(5))
+        self.assertEqual(to_native_list(self.linked_list), [5, 42])
+
+    def test_insert_at_tail_sinleitem(self):
+        self.linked_list = LinkedList()
+        node1 = Node(42)
+        self.linked_list.add_in_tail(node1)
+        self.linked_list.insert(node1, Node(5))
+        self.assertEqual(to_native_list(self.linked_list), [42, 5])
     
 if __name__ == '__main__':
     unittest.main()
