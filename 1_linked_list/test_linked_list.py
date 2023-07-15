@@ -49,7 +49,6 @@ class TestLinkedListMethods(unittest.TestCase):
         self.assertIsNone(l.find(2))
         self.assertIsNone(l.find(-1))
     
-    @unittest.expectedFailure
     def test_find_all(self):
         l = LinkedList()
         node1 = Node(-1)
@@ -70,7 +69,6 @@ class TestLinkedListMethods(unittest.TestCase):
         self.assertEqual(l.find_all(2), [])
         self.assertEqual(l.find_all(-1), [])
     
-    @unittest.expectedFailure
     def test_find_all_at_oneitem(self):
         l = LinkedList()
         node1 = Node(-1)
