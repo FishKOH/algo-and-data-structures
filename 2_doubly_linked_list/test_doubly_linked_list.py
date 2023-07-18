@@ -32,8 +32,10 @@ class TestDoublyLinkedListAddInTail(unittest.TestCase):
         l.add_in_tail(Node(8))
         self.assertEqual(l.head.value, 1)
         self.assertIsNotNone(l.head.next)
+        self.assertIsNone(l.head.prev)
         self.assertEqual(l.tail.value, 8)
         self.assertIsNone(l.tail.next)
+        self.assertIsNotNone(l.tail.prev)
         self.assertEqual(to_native_list(l), [1,2,4,8])
 
 
@@ -90,6 +92,15 @@ class TestDoublyLinkedListDelete(unittest.TestCase):
             fact_tail = node;
             node = node.next
         self.assertEqual(self.linked_list.tail, fact_tail)
+        
+        #DoublyLinkedList: check correctness link by prev
+        fact_head = None
+        node = self.linked_list.tail
+        while node is not None:
+            fact_head = node;
+            node = node.prev
+        self.assertEqual(self.linked_list.head, fact_head)
+
 
     def test_delete_first_at_middle(self):
         self.linked_list = create_DoublyLinkedList([1,2,2,8])
@@ -201,6 +212,13 @@ class TestDoublyLinkedListInsert(unittest.TestCase):
             fact_tail = node;
             node = node.next
         self.assertEqual(self.linked_list.tail, fact_tail)
+        
+        fact_head = None
+        node = self.linked_list.tail
+        while node is not None:
+            fact_head = node;
+            node = node.prev
+        self.assertEqual(self.linked_list.head, fact_head)
 
     def test_insert_at_middle(self):
         self.linked_list = LinkedList2()

@@ -20,13 +20,38 @@ class LinkedList2:
         self.tail = item
 
     def find(self, val):
-        return None # здесь будет ваш код
+        node = self.head
+        while node is not None:
+            if node.value == val:
+                return node
+            node = node.next
+        return None
 
     def find_all(self, val):
-        return [] # здесь будет ваш код
+        finded_nodes = []
+        node = self.head
+        while node is not None:
+            if node.value == val:
+                finded_nodes.append(node)
+            node = node.next
+        return finded_nodes
 
     def delete(self, val, all=False):
-        pass # здесь будет ваш код
+        node = self.head
+        while node is not None:
+            next_node = node.next
+            if node.value == val:
+                if node.prev is not None:
+                    node.prev.next = next_node
+                else: # node is head
+                    self.head = next_node
+                if next_node is not None:
+                    next_node.prev = node.prev
+                else: # node is tail
+                    self.tail = node.prev
+                if not all:
+                    return
+            node = next_node
 
     def clean(self):
         pass # здесь будет ваш код
