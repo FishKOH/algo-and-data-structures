@@ -184,11 +184,11 @@ class TestLinkedListClean(unittest.TestCase):
 
 class TestLinkedListLen(unittest.TestCase):
 
-    def test_clean(self):
+    def test_len(self):
         l = create_LinkedList([1,2,4,8,16])
         self.assertEqual(l.len(), 5)
 
-    def test_clean_empty(self):
+    def test_len_empty(self):
         l = LinkedList()
         self.assertEqual(l.len(), 0)
 
