@@ -35,6 +35,7 @@ class DynArray:
         return self.array[i]
 
     def resize(self, new_capacity):
+        # time complexity - O(N)
         assert new_capacity >= self.minimal_capacity, f"Couldn't resize({new_capacity}). {self.minimal_capacity} is minimal capacity"
         
         new_array = self.make_array(new_capacity)
@@ -44,11 +45,13 @@ class DynArray:
         self.capacity = new_capacity
 
     def append(self, itm):
+        # time complexity - Asymptotic O(1)
         self.__realloc()
         self.array[self.count] = itm
         self.count += 1
 
     def insert(self, i, itm):
+        # time complexity - O(N)
         if i < 0 or i > self.count:
             raise IndexError('Index is out of bounds')
         self.__realloc()
@@ -58,6 +61,7 @@ class DynArray:
         self.count += 1
 
     def delete(self, i):
+        # time complexity - O(N)
         if i < 0 or i >= self.count:
             raise IndexError('Index is out of bounds')
         for i in range(i, self.count-1):
