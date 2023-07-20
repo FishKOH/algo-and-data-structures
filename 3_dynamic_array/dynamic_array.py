@@ -19,6 +19,8 @@ class DynArray:
         return self.array[i]
 
     def resize(self, new_capacity):
+        assert new_capacity >= 16, f"Couldn't resize({new_capacity}). 16 is minimal capacity"
+        
         new_array = self.make_array(new_capacity)
         for i in range(self.count):
             new_array[i] = self.array[i]
@@ -33,6 +35,8 @@ class DynArray:
 
     def insert(self, i, itm):
         # добавляем объект itm в позицию i, начиная с 0
+        pass
 
     def delete(self, i):
+        pass
         # удаляем объект в позиции i
