@@ -15,6 +15,7 @@ class Stack:
 
     def push(self, value):
         # ваш код
+        pass
 
     def peek(self):
         # ваш код
