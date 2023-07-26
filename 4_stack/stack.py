@@ -63,15 +63,17 @@ class LinkedList2:
 
 class Stack:
     def __init__(self):
-        self.stack = LinkedList2() 
         # Time Complexity
-        # |      | native_list/dynamic_array      | doubly linked_list            |
-        # | ---  | ---                            | ---                           |
-        # | tail | size O(1) pop O(1) push O(1)   | size O(N) pop O(1) push O(1)  |
-        # | head | size O(1) pop O(N) push O(N)   | size O(N) pop O(1) push O(1)  |
+        # |      | native_list/dynamic_array      | linked_list                   | doubly linked_list            |
+        # | ---  | ---                            | ---                           | ---                           |
+        # | tail | size O(1) pop O(1) push O(1)   | size O(N) pop O(N) push O(1)  | size O(N) pop O(1) push O(1)  |
+        # | head | size O(1) pop O(N) push O(N)   | size O(N) pop O(1) push O(1)  | size O(N) pop O(1) push O(1)  |
+        
+        self.stack = LinkedList2()
+        self.__size = 0 # optimize self.size() O(N) -> O(1)
 
     def size(self):
-        return len(self.stack)
+        return self.__size
 
     def pop(self):
         if self.stack.head() is None:
@@ -79,10 +81,12 @@ class Stack:
         else:
             saved_value = self.peek()
             self.stack.delete_in_head()
+            self.__size -= 1
             return saved_value
 
     def push(self, value):
         self.stack.add_in_head(Node(value))
+        self.__size += 1
 
     def peek(self):
         if self.stack.head() is None:
