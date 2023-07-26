@@ -79,11 +79,11 @@ class Queue:
     def dequeue(self):
         if self.__queue.empty():
             return None
-        else:
-            head_value = self.__queue.head().value
-            self.__queue.delete_in_head()
-            self.__size -= 1
-            return head_value
+        
+        head_value = self.__queue.head().value
+        self.__queue.delete_in_head()
+        self.__size -= 1
+        return head_value
 
     def size(self):
         return self.__size

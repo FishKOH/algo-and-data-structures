@@ -78,11 +78,11 @@ class Stack:
     def pop(self):
         if self.stack.head() is None:
             return None
-        else:
-            saved_value = self.peek()
-            self.stack.delete_in_head()
-            self.__size -= 1
-            return saved_value
+
+        saved_value = self.peek()
+        self.stack.delete_in_head()
+        self.__size -= 1
+        return saved_value
 
     def push(self, value):
         self.stack.add_in_head(Node(value))
@@ -91,8 +91,8 @@ class Stack:
     def peek(self):
         if self.stack.head() is None:
             return None
-        else:
-            return self.stack.head().value
+
+        return self.stack.head().value
 
 
 class Stack_v0:
@@ -105,10 +105,10 @@ class Stack_v0:
     def pop(self):
         if self.stack.tail() is None:
             return None
-        else:
-            saved_value = self.peek()
-            self.stack.delete_in_tail()
-            return saved_value
+
+        saved_value = self.peek()
+        self.stack.delete_in_tail()
+        return saved_value
 
     def push(self, value):
         self.stack.add_in_tail(Node(value))     
@@ -116,5 +116,5 @@ class Stack_v0:
     def peek(self):
         if self.stack.tail() is None:
             return None
-        else:
-            return self.stack.tail().value
+
+        return self.stack.tail().value
