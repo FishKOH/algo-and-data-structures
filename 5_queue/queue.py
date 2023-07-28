@@ -67,7 +67,7 @@ class Queue:
         # |                    | enqueue  | dequeue | size |
         # | ---                | ---      | ---     | ---  |
         # | native_list        | O(1)     | O(N)    | O(1) |
-        # | linked_list        | O(1)     | O(1)    | O(N) |
+        # | linked_list        | O(1)     | O(N)    | O(N) |
         # | doubly_linked_list | O(1)     | O(1)    | O(N) |
         self.__queue = LinkedList2()
         self.__size = 0 # optimize self.size() O(N) -> O(1)
