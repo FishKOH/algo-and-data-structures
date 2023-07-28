@@ -66,16 +66,13 @@ class LinkedList2:
         return node_count
 
     def insert(self, afterNode, newNode):
-        if afterNode is None:
+        if afterNode is None or afterNode == self.tail:
             self.add_in_tail(newNode)
         else:
             newNode.prev = afterNode
             newNode.next = afterNode.next
             afterNode.next = newNode
-            if newNode.next is None: #afterNode was tail
-                self.tail = newNode
-            else:
-                newNode.next.prev = newNode
+            newNode.next.prev = newNode
 
     def add_in_head(self, newNode):
         if self.empty():
