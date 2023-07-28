@@ -41,33 +41,37 @@ class OrderedList:
             self.head = newNode
 
     def __insert(self, afterNode, newNode):
-        if afterNode is None:
+        if afterNode is None or afterNode == self.tail:
             self.__add_in_tail(newNode)
         else:
             newNode.prev = afterNode
             newNode.next = afterNode.next
             afterNode.next = newNode
-            if newNode.next is None: #afterNode was tail
-                self.tail = newNode
-            else:
-                newNode.next.prev = newNode
+            newNode.next.prev = newNode
 
-    # v1 is after v2 
+    # True  if v1 is after  v2 
+    # False if v1     same  v2
+    # False if v1 is before v2
     def __is_after(self, v1, v2):
         after_compare_result = 1 if self.__ascending else -1
         return self.compare(v1, v2) == after_compare_result
+    
+    # True  id v1 is before v2 
+    # False if v1     same  v2
+    # False if v1 is after  v2
+    def __is_before(self, v1, v2):
+        before_compare_result = -1 if self.__ascending else 11
+        return self.compare(v1, v2) == before_compare_result
 
-    # v1 is after v2 or v1 == v2
-    def __is_after_or_same(self, v1, v2):
-        after_compare_result = 1 if self.__ascending else -1
-        cmp_result = self.compare(v1, v2)
-        return cmp_result == after_compare_result or cmp_result == 0
-
-    def add(self, value):
-        # Time Complexity O(N)
+    def __find_closest_not_after(self, value):
         node = self.head
         while node is not None and self.__is_after(value, node.value):
             node = node.next
+        return node
+
+    def add(self, value):
+        # Time Complexity O(N)
+        node = self.__find_closest_not_after(value)
         
         if node == self.head:
             self.__add_in_head(Node(value))
@@ -79,7 +83,7 @@ class OrderedList:
     def find(self, val):
         # Time Complexity O(N)
         node = self.head
-        while node is not None and self.__is_after_or_same(val, node.value):
+        while node is not None and not self.__is_before(val, node.value):
             if node.value == val:
                 return node
             node = node.next
@@ -87,20 +91,19 @@ class OrderedList:
 
     def delete(self, val):
         # Time Complexity O(N)
-        node = self.head
-        while node is not None and self.__is_after_or_same(val, node.value):
-            next_node = node.next
-            if node.value == val:
-                if node.prev is not None:
-                    node.prev.next = next_node
-                else: # node is head
-                    self.head = next_node
-                if next_node is not None:
-                    next_node.prev = node.prev
-                else: # node is tail
-                    self.tail = node.prev
-                return
-            node = next_node
+        node = self.find(val)
+        if node is None:
+            return
+        
+        next_node = node.next
+        if node.prev is not None:
+            node.prev.next = next_node
+        else: # node is head
+            self.head = next_node
+        if next_node is not None:
+            next_node.prev = node.prev
+        else: # node is tail
+            self.tail = node.prev
 
     def clean(self, asc):
         self.__init__(asc)
