@@ -16,11 +16,6 @@ class TestOrderedList(unittest.TestCase):
         self.assertEqual(inc_ord_list.get_all(), [])
         self.assertIsNone(inc_ord_list.find(1))
         
-        #inc_ord_list.add(1)
-        inc_ord_list.delete(1)
-        inc_ord_list.clean(True)
-        #inc_ord_list.clean(False)
-        
     def test_init_decreasing(self):
         dec_ord_list = OrderedList(False)
         self.assertEqual(dec_ord_list.len(), 0)
