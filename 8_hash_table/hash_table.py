@@ -39,6 +39,8 @@ class HashTable:
 
         steps = 0
         while steps < self.size:
+            if self.slots[index] is None:
+                return None                
             if self.slots[index] == value:
                 return index
                 
