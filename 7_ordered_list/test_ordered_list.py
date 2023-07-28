@@ -200,7 +200,7 @@ class TestOrderedStringList(unittest.TestCase):
         
         ord_list.clean(False)
         for s in [' ab', 'a', ' a ', '  z', 'x', ' zeeeee  ']:
-            ord_list.add(v)
+            ord_list.add(s)
         self.assertEqual(extract_values(ord_list.get_all()), [' zeeeee  ', '  z', 'x', ' ab', ' a ', 'a'])
         
         ord_list.delete('FishKOH')
