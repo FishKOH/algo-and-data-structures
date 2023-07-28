@@ -16,13 +16,11 @@ class HashTable:
     def seek_slot(self, value : str) -> int: #or None
         index = self.hash_fun(value)
 
-        steps = 0
-        while steps < self.size:
+        for _ in range(self.size):
             if self.slots[index] is None:
                 return index
                 
             index = (index + self.step) % self.size
-            steps += 1
         return None
 
     def put(self, value : str) -> int: #or None
@@ -37,13 +35,11 @@ class HashTable:
     def find(self, value : str)-> int: #or None
         index = self.hash_fun(value)
 
-        steps = 0
-        while steps < self.size:
+        for _ in range(self.size):
             if self.slots[index] is None:
                 return None                
             if self.slots[index] == value:
                 return index
                 
             index = (index + self.step) % self.size
-            steps += 1
         return None
