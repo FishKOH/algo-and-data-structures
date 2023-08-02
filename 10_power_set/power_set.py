@@ -26,15 +26,15 @@ class PowerSet:
 
     def intersection(self, set2):
         # пересечение текущего множества и set2
-        return None 
+        return PowerSet() 
 
     def union(self, set2):
         # объединение текущего множества и set2
-        return None
+        return PowerSet()
 
     def difference(self, set2):
         # разница текущего множества и set2
-        return None
+        return PowerSet()
 
     def issubset(self, set2):
         # возвращает True, если set2 есть
