@@ -120,7 +120,7 @@ class TestPowerSetUnion(unittest.TestCase):
         
         union_set = power_set.union(other_power_set)
         self.assertEqual(union_set.size(), 10)
-        for i in range(15):
+        for i in range(10):
             with self.subTest(i=i):
                 self.assertTrue(union_set.get(i))
 
@@ -166,12 +166,12 @@ class TestPowerSetIsSubset(unittest.TestCase):
     def test_b_in_a(self):
         a = create_power_set([1,2,3,4])
         b = create_power_set([3,4])
-        self.assertFalse(a.issubset(b))
+        self.assertTrue(a.issubset(b))
     
     def test_a_in_b(self):
         a = create_power_set([1,2])
         b = create_power_set([1,2,3,4])
-        self.assertTrue(a.issubset(b))
+        self.assertFalse(a.issubset(b))
     
     def test_partly_intersection(self):
         a = create_power_set([1,2,3,4])

@@ -1,43 +1,57 @@
-# наследуйте этот класс от HashTable
-# или расширьте его методами из HashTable
-class PowerSet:
+# PowerSetBasedNativeList
+class PowerSet():
 
     def __init__(self):
-        # ваша реализация хранилища
-        pass
+        self.__storage = []
 
     def size(self):
-        return 0
-        # количество элементов в множестве
+        return len(self.__storage)
 
     def put(self, value):
-        # всегда срабатывает
-        pass
+        # O(N)
+        if value not in self.__storage:
+            self.__storage.append(value)
 
     def get(self, value):
-        # возвращает True если value имеется в множестве,
-        # иначе False
-        return False
+        # O(N)
+        return value in self.__storage
 
     def remove(self, value):
-        # возвращает True если value удалено
-        # иначе False
-        return False
+        # O(N)
+        if value not in self.__storage:
+            return False
+
+        self.__storage.remove(value)
+        return True
 
     def intersection(self, set2):
-        # пересечение текущего множества и set2
-        return PowerSet() 
+        # O(N*N)
+        intersection_set = PowerSet()
+        for value in self.__storage:
+            if set2.get(value):
+               intersection_set.put(value) 
+            
+        return intersection_set
 
     def union(self, set2):
-        # объединение текущего множества и set2
-        return PowerSet()
+        # O(N*N)
+        union_set = PowerSet()
+        for value in self.__storage:
+            union_set.put(value)
+        for value in set2.__storage:
+            union_set.put(value)
+        return union_set
 
     def difference(self, set2):
-        # разница текущего множества и set2
-        return PowerSet()
+        # O(N*N)
+        diff_set = PowerSet()
+        for value in self.__storage:
+            if not set2.get(value):
+                diff_set.put(value)
+        return diff_set
 
     def issubset(self, set2):
-        # возвращает True, если set2 есть
-        # подмножество текущего множества,
-        # иначе False
-        return False
+        # O(N*N)
+        return all( self.get(value) for value in set2.__storage)
+
+# PowerSet = PowerSetBasedNativeList
