@@ -182,3 +182,37 @@ class TestPowerSetIsSubset(unittest.TestCase):
         a = create_power_set([1,2,3])
         b = create_power_set([1,2,3])
         self.assertTrue(a.issubset(b))
+
+class TestPowerSetEfficiency(unittest.TestCase):
+
+    def setUp(self):
+        self.set = PowerSet()
+        for i in range(20000):
+            self.set.put(i)
+
+        self.other_set = PowerSet()
+        for i in range(13000, 23000):
+            self.other_set.put(i)
+
+
+    def test_efficiency_put(self):
+        self.set.put(1)
+        self.set.put(100)
+        self.set.put(100000)
+    
+    def test_efficiency_get(self):
+        self.set.get(5)
+        self.set.get(500)
+        self.set.get(50000)
+    
+    def test_efficiency_remove(self):
+        self.set.remove(7)
+        self.set.remove(700)
+        self.set.remove(70000)
+    
+    def test_efficiency_relations(self):
+        self.assertEqual(self.set.intersection(self.other_set).size(), 7000)
+        self.assertEqual(self.set.union(self.other_set).size(), 23000)
+        self.assertEqual(self.set.difference(self.other_set).size(), 13000)
+        self.assertFalse(self.set.issubset(self.other_set))
+
