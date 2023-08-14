@@ -18,17 +18,17 @@ class SimpleTree:
         NodeToDelete.Parent.Children.remove(NodeToDelete)
         NodeToDelete.Parent = None
 
+    # traversal tree and call f(node) for every node
     def _dfs(self, f):
         # non-recursive version dfs
         if self.Root is None:
             return
         
-        node_stack = [self.Root]
-        while len(node_stack) > 0:
-            curr_node = node_stack.pop()
+        nodes_stack = [self.Root]
+        while len(nodes_stack) > 0:
+            curr_node = nodes_stack.pop()
             f(curr_node)
-            for node in curr_node.Children:
-                node_stack.append(node)
+            nodes_stack.extend(curr_node.Children)
     
     def GetAllNodes(self):
         all_nodes = []
@@ -67,3 +67,20 @@ class SimpleTree:
         
         self._dfs(_leaf_count)
         return leafs_count
+    
+    def AssignTreeLevel(self, init_lvl = 0):
+        def _set_tree_lvl(node):
+            nonlocal init_lvl
+            node.NodeValue = node.Parent.NodeValue + 1 if node.Parent else init_lvl
+        self._dfs(_set_tree_lvl)
+    
+    def __AssignTreeLevelRecursive(self, node, init_lvl):
+        node.NodeValue = init_lvl
+        for child_node in node.Children:
+            self.__AssignTreeLevelRecursive(child_node, init_lvl+1)
+    
+    def AssignTreeLevelRecursive(self, init_lvl = 0):
+        if self.Root is None: 
+            return
+        
+        self.__AssignTreeLevelRecursive(self.Root, init_lvl)

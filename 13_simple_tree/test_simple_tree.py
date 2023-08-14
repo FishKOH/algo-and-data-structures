@@ -98,3 +98,22 @@ class TestSimpleTree(unittest.TestCase):
         tree = SimpleTree(None)
         self.assertEqual(tree.Count(), 0)
         self.assertEqual(tree.LeafCount(), 0)
+        
+    def test_assign_tree_level(self):
+        self.tree.AssignTreeLevel(1)
+        
+        self.assertEqual(self.tree.Root.NodeValue, 1)
+        self.assertEqual(self.node1.NodeValue, 2)
+        self.assertEqual(self.node2.NodeValue, 2)
+        self.assertEqual(self.node11.NodeValue, 3)
+        self.assertEqual(self.node12.NodeValue, 3)
+    
+    def test_assign_tree_level_recursive(self):
+        self.tree.AssignTreeLevelRecursive()
+        
+        self.assertEqual(self.tree.Root.NodeValue, 0)
+        self.assertEqual(self.node1.NodeValue, 1)
+        self.assertEqual(self.node2.NodeValue, 1)
+        self.assertEqual(self.node11.NodeValue, 2)
+        self.assertEqual(self.node12.NodeValue, 2)
+    
