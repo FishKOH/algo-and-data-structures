@@ -1,5 +1,5 @@
 import unittest
-from bst import BST, BSTNode, BSTFind
+from bst import * #BST, BSTNode, BSTFind
 
 
 class TestBSTRawInit(unittest.TestCase):
@@ -317,3 +317,54 @@ class TestBSTCount(unittest.TestCase):
         self.assertEqual(tree.Count(), 6)
         tree.AddKeyValue(500, '500')
         self.assertEqual(tree.Count(), 7)
+
+def nodes_to_keys(nodes):
+    return [node.NodeKey for node in nodes]
+
+class TestBST_Search(unittest.TestCase):
+    
+    def setUp(self):
+        '''
+        40
+        | \
+        20 80
+        |   | \
+        10  42 160
+                 \
+                  500
+        '''
+        tree = BST(None)
+        tree.AddKeyValue(40, '40')
+        tree.AddKeyValue(20, '20')
+        tree.AddKeyValue(80, '80')
+        tree.AddKeyValue(10, '10')
+        tree.AddKeyValue(42, '42')
+        tree.AddKeyValue(160, '160')
+        tree.AddKeyValue(500, '500')
+        
+        self.tree = tree
+    
+    def test_bfs(self):
+        self.assertEqual(nodes_to_keys(self.tree.BFS()), 
+        [40, 20, 80, 10, 42, 160, 500])
+    
+    def test_bfs_at_empty(self):
+        tree = BST(None)
+        self.assertEqual(nodes_to_keys(tree.BFS()), [])
+
+    def test_dfs_in_order(self):
+        self.assertEqual(nodes_to_keys(self.tree.DFS(IN_ORDER)), 
+        [10, 20, 40, 42, 80, 160, 500])
+
+    def test_dfs_post_order(self):
+        self.assertEqual(nodes_to_keys(self.tree.DFS(POST_ORDER)), 
+        [10, 20, 42, 500, 160, 80, 40])
+
+    def test_dfs_pre_order(self):
+        self.assertEqual(nodes_to_keys(self.tree.DFS(PRE_ORDER)), 
+        [40, 20, 10, 80, 42, 160, 500])
+    
+    def test_dfs_at_empty(self):
+        tree = BST(None)
+        self.assertEqual(nodes_to_keys(tree.DFS(IN_ORDER)), [])
+

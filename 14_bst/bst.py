@@ -18,6 +18,10 @@ class BSTFind: # промежуточный результат поиска
         self.ToLeft = False # True, если родительскому узлу надо 
         # добавить новый узел левым потомком
 
+IN_ORDER = 0
+POST_ORDER = 1
+PRE_ORDER = 2
+
 class BST:
 
     def __init__(self, node : BSTNode):
@@ -138,25 +142,71 @@ class BST:
         self.__isolate_node(delete_node)
         return True
     
-    # traversal tree and call f(node) for every node
-    def _dfs(self, f):
-        # non-recursive version dfs
-        if self.Root is None:
-            return
-        
-        nodes_stack = [self.Root]
-        while len(nodes_stack) > 0:
-            curr_node = nodes_stack.pop()
-            f(curr_node)
-            for child in [curr_node.LeftChild, curr_node.RightChild]:
-                if child is not None:
-                    nodes_stack.append(child)
-    
     def Count(self) -> int:
-        nodes_count = 0
-        def _count(node):
-            nonlocal nodes_count
-            nodes_count += 1
+        return len(self.DFS(PRE_ORDER))
+    
+    def WideAllNodes(self): #-> list[BSTNode]:
+        all_nodes = []
+        nodes_queue = [self.Root]
+        while len(nodes_queue) > 0:
+            node = nodes_queue[0]
+            nodes_queue = nodes_queue[1:]
+            if node is not None:
+                all_nodes.append(node)
+                nodes_queue.extend([node.LeftChild, node.RightChild])
+        return tuple(all_nodes)
+    
+    BFS = WideAllNodes
+    
+    def DeepAllNodes(self, order): # -> list[BSTNode]:
+        assert order in [IN_ORDER, POST_ORDER, PRE_ORDER]
+        all_nodes = []
         
-        self._dfs(_count)
-        return nodes_count
+        def __dfs_recursive(node):
+            if node is None:
+                return
+            
+            if order == IN_ORDER:
+                __dfs(node.LeftChild)
+                all_nodes.append(node)
+                __dfs(node.RightChild)
+            
+            if order == POST_ORDER:
+                __dfs(node.LeftChild)
+                __dfs(node.RightChild)
+                all_nodes.append(node)
+            
+            if order == PRE_ORDER:
+                all_nodes.append(node)
+                __dfs(node.LeftChild)
+                __dfs(node.RightChild)
+        
+        def __dfs_iterative(node):
+            node_stack = [(self.Root, False)] # pair (Node, isReady)
+            while len(node_stack) > 0:
+                curr_node, is_ready = node_stack.pop()
+                if curr_node is None:
+                    continue
+                
+                if is_ready:
+                    all_nodes.append(curr_node)
+                    continue
+
+                if order == IN_ORDER:
+                    node_stack.append((curr_node.RightChild, False))
+                    node_stack.append((curr_node, True))
+                    node_stack.append((curr_node.LeftChild, False))
+                if order == POST_ORDER:
+                    node_stack.append((curr_node, True))
+                    node_stack.append((curr_node.RightChild, False))
+                    node_stack.append((curr_node.LeftChild, False))
+                if order == PRE_ORDER:
+                    node_stack.append((curr_node.RightChild, False))
+                    node_stack.append((curr_node.LeftChild, False))
+                    node_stack.append((curr_node, True))
+            
+        # __dfs_recursive(self.Root)
+        __dfs_iterative(self.Root)
+        return tuple(all_nodes)
+    
+    DFS = DeepAllNodes
