@@ -116,4 +116,161 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(self.node2.NodeValue, 1)
         self.assertEqual(self.node11.NodeValue, 2)
         self.assertEqual(self.node12.NodeValue, 2)
+
+class TestEvenTrees(unittest.TestCase):
+
+    def test_empty(self):
+        tree = SimpleTree(None)        
+        self.assertEqual(tree.EvenTrees(), [])
     
+    def test_non_even(self):
+        '''
+        0
+        | \ 
+        1  2
+        '''
+        root_node = SimpleTreeNode(0)
+        tree = SimpleTree(root_node)
+
+        node1 = SimpleTreeNode(1)
+        node2 = SimpleTreeNode(2)
+        tree.AddChild(root_node, node1)
+        tree.AddChild(root_node, node2)
+        
+        self.assertEqual(tree.EvenTrees(), [])
+
+    def test_non_separated_simple(self):
+        '''
+        0
+        | 
+        1
+        '''
+        root_node = SimpleTreeNode(0)
+        tree = SimpleTree(root_node)
+
+        node1 = SimpleTreeNode(1)
+        tree.AddChild(root_node, node1)
+        self.assertEqual(tree.EvenTrees(), [])
+
+    def test_non_separated_complex(self):
+        '''
+        0
+        | \ \
+        1  2 3
+        | \
+        4 5
+        '''
+        root_node = SimpleTreeNode(0)
+        tree = SimpleTree(root_node)
+
+        node1 = SimpleTreeNode(1)
+        node2 = SimpleTreeNode(2)
+        node3 = SimpleTreeNode(3)
+        tree.AddChild(root_node, node1)
+        tree.AddChild(root_node, node2)
+        tree.AddChild(root_node, node3)
+        
+        node4 = SimpleTreeNode(4)
+        node5 = SimpleTreeNode(5)
+        tree.AddChild(node1, node4)
+        tree.AddChild(node1, node5)
+        
+        self.assertEqual(tree.EvenTrees(), [])
+
+
+    def test_separated_simple(self):
+        '''
+        0
+        | \
+        1  2
+        |
+        3
+        '''
+        root_node = SimpleTreeNode(0)
+        tree = SimpleTree(root_node)
+
+        node1 = SimpleTreeNode(1)
+        node2 = SimpleTreeNode(2)
+        tree.AddChild(root_node, node1)
+        tree.AddChild(root_node, node2)
+        
+        node3 = SimpleTreeNode(3)
+        tree.AddChild(node1, node3)
+        
+        self.assertEqual(tree.EvenTrees(), [root_node, node1])
+
+    def test_separated_complex(self):
+        '''
+        1
+        |      \       \
+        2       3       6
+        | \     |       |
+        5  7    4       8
+                        | \
+                        9 10
+        '''
+        root_node = SimpleTreeNode(1)
+        tree = SimpleTree(root_node)
+
+        node2 = SimpleTreeNode(2)
+        node3 = SimpleTreeNode(3)
+        node6 = SimpleTreeNode(6)
+        tree.AddChild(root_node, node2)
+        tree.AddChild(root_node, node3)
+        tree.AddChild(root_node, node6)
+        
+        node5 = SimpleTreeNode(5)
+        node7 = SimpleTreeNode(7)
+        tree.AddChild(node2, node5)
+        tree.AddChild(node2, node7)
+        
+        node4 = SimpleTreeNode(4)
+        tree.AddChild(node3, node4)
+
+        node8 = SimpleTreeNode(8)
+        tree.AddChild(node6, node8)
+        
+        node9 = SimpleTreeNode(9)
+        node10 = SimpleTreeNode(10)
+        tree.AddChild(node8, node9)
+        tree.AddChild(node8, node10)
+        
+        self.assertEqual(tree.EvenTrees(), [root_node, node3, root_node, node6])
+
+    def test_separated_complex2(self):
+        '''
+        1
+        |
+        2
+        | \ 
+        3  4
+        |
+        5
+        |\
+        6 7
+        |
+        8
+        '''
+        root_node = SimpleTreeNode(1)
+        tree = SimpleTree(root_node)
+
+        node2 = SimpleTreeNode(2)
+        tree.AddChild(root_node, node2)
+        
+        node3 = SimpleTreeNode(3)
+        node4 = SimpleTreeNode(4)
+        tree.AddChild(node2, node3)
+        tree.AddChild(node2, node4)
+        
+        node5 = SimpleTreeNode(5)
+        tree.AddChild(node3, node5)
+        
+        node6 = SimpleTreeNode(6)
+        node7 = SimpleTreeNode(7)
+        tree.AddChild(node5, node6)
+        tree.AddChild(node5, node7)
+        
+        node8 = SimpleTreeNode(8)
+        tree.AddChild(node6, node8)
+        
+        self.assertEqual(tree.EvenTrees(), [node3, node5, node5, node6])

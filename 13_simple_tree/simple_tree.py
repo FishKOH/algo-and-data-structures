@@ -84,3 +84,27 @@ class SimpleTree:
             return
         
         self.__AssignTreeLevelRecursive(self.Root, init_lvl)
+    
+    def EvenTrees(self):
+        
+        def __possible_cuts(node): # [p_node, node,..], nodes_count
+            if len(node.Children) == 0:
+                return [], 1
+            
+            nodes_count = 0
+            cuts = []
+            children_cuts = []
+            for child in node.Children:
+                child_cuts, child_nodes_count =__possible_cuts(child)
+                children_cuts.extend(child_cuts)
+                nodes_count += child_nodes_count
+                if child_nodes_count % 2 == 0:
+                    cuts.extend([node, child])
+            cuts.extend(children_cuts)
+            return cuts, nodes_count + 1
+        
+        if self.Root is None:
+            return []
+        
+        possible_cuts, count = __possible_cuts(self.Root)
+        return possible_cuts if count % 2 == 0 else []
