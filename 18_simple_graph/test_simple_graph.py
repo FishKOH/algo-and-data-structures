@@ -149,3 +149,43 @@ class TestDfs(unittest.TestCase):
         self.assertEqual(graph.DepthFirstSearch(0,4), [graph.vertex[0], graph.vertex[2], graph.vertex[4]])
         graph.RemoveEdge(0, 2)
         self.assertEqual(graph.DepthFirstSearch(0,4), [])
+
+class TestBfs(unittest.TestCase):
+
+    def test_simple(self):
+        graph = SimpleGraph(3)
+        graph.AddVertex(42)
+        graph.AddVertex(8)
+        graph.AddVertex(-1)
+        
+        graph.AddEdge(0,1)
+        graph.AddEdge(0,2)
+        graph.AddEdge(2,2)
+        self.assertEqual(graph.BreadthFirstSearch(1,2), [graph.vertex[1], graph.vertex[0], graph.vertex[2]])
+        graph.RemoveEdge(2, 0)
+        self.assertEqual(graph.BreadthFirstSearch(1,2), [])
+        
+        self.assertEqual(graph.BreadthFirstSearch(2,2), [graph.vertex[2]])
+        graph.RemoveEdge(2, 2)
+        self.assertEqual(graph.BreadthFirstSearch(2,2), [])
+    
+    def test_complex(self):
+        graph = SimpleGraph(5)
+        for i in range(5):
+            graph.AddVertex(i)
+        
+        graph.AddEdge(0,1)
+        graph.AddEdge(1,2)
+        graph.AddEdge(2,3)
+        graph.AddEdge(3,4)
+        
+        graph.AddEdge(0,2)
+        graph.AddEdge(2,4)
+        
+        self.assertEqual(graph.BreadthFirstSearch(0,4), [graph.vertex[0], graph.vertex[2], graph.vertex[4]])
+        graph.RemoveEdge(0, 2)
+        self.assertEqual(graph.BreadthFirstSearch(0,4), [graph.vertex[0], graph.vertex[1], graph.vertex[2], graph.vertex[4]])
+        graph.RemoveEdge(2, 4)
+        self.assertEqual(graph.BreadthFirstSearch(0,4), [graph.vertex[0], graph.vertex[1], graph.vertex[2], graph.vertex[3], graph.vertex[4]])
+        graph.RemoveEdge(0, 1)
+        self.assertEqual(graph.BreadthFirstSearch(0,4), [])
