@@ -194,12 +194,13 @@ class SimpleGraph:
                     self.vertex[idx].Hit = True
                     parents[idx] = cur_idx
         
-        if parents[idx_v_to] is not None:
-            path = [idx_v_to]
-            idx = idx_v_to
-            while idx != idx_v_from:
-                idx = parents[idx]
-                path.append(idx)
-            return [self.vertex[idx] for idx in reversed(path)]
+        if parents[idx_v_to] is None:
+            return []        
         
-        return []
+        path = [idx_v_to]
+        idx = idx_v_to
+        while idx != idx_v_from:
+            idx = parents[idx]
+            path.append(idx)
+        return [self.vertex[idx] for idx in reversed(path)]
+        
