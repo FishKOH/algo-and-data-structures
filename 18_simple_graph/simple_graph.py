@@ -145,31 +145,31 @@ class SimpleGraph:
                 if v is not None:
                     v.Hit = False
     
+    def __dfs_recursive(self, idx_cur_v, idx_search_v, path_as_stack):
+        self.vertex[idx_cur_v].Hit = True
+        path_as_stack.append(idx_cur_v)
+        if self.m_adjacency[idx_cur_v][idx_search_v] == 1:
+            if idx_cur_v != idx_search_v:
+                path_as_stack.append(idx_search_v)
+            return
+        for idx in range(self.max_vertex):
+            if self.m_adjacency[idx_cur_v][idx] == 1 and self.vertex[idx].Hit == False:
+                self.__dfs_recursive(idx, idx_search_v, path_as_stack)
+                if path_as_stack[-1] == idx_search_v: # check -1 exist
+                    return
+        
+        path_as_stack.pop()
+        if len(path_as_stack) == 0:
+            return
+    
     def DepthFirstSearch(self, idx_v_from, idx_v_to):
         if not self.__exist(idx_v_from) or not self.__exist(idx_v_to):
             return []
         
-        def __dfs_recursive(idx_cur_v, idx_search_v, path_as_stack):
-            self.vertex[idx_cur_v].Hit = True
-            path_as_stack.append(idx_cur_v)
-            if self.m_adjacency[idx_cur_v][idx_search_v] == 1:
-                if idx_cur_v != idx_search_v:
-                    path_as_stack.append(idx_search_v)
-                return
-            for idx in range(self.max_vertex):
-                if self.m_adjacency[idx_cur_v][idx] == 1 and self.vertex[idx].Hit == False:
-                    __dfs_recursive(idx, idx_search_v, path_as_stack)
-                    if path_as_stack[-1] == idx_search_v: # check -1 exist
-                        return
-            
-            path_as_stack.pop()
-            if len(path_as_stack) == 0:
-                return
-        
         self.__prepare_search()
         
         path_as_stack = []
-        __dfs_recursive(idx_v_from, idx_v_to, path_as_stack)
+        self.__dfs_recursive(idx_v_from, idx_v_to, path_as_stack)
         return [self.vertex[idx] for idx in path_as_stack]
     
     def BreadthFirstSearch(self, idx_v_from, idx_v_to):
