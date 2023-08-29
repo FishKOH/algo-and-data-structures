@@ -203,4 +203,16 @@ class SimpleGraph:
             idx = parents[idx]
             path.append(idx)
         return [self.vertex[idx] for idx in reversed(path)]
-        
+    
+    def WeakVertices(self):
+        strong_verticies = [False] * self.max_vertex
+        #TODO: optimize loop: over exist vertex only
+        for i in range(self.max_vertex):
+            for j in range(i+1, self.max_vertex):
+                for k in range(j+1, self.max_vertex):
+                    if (self.__exist(i) and self.__exist(j) and self.__exist(k) and 
+                        self.IsEdge(i, j) and self.IsEdge(i, k) and self.IsEdge(j, k)):
+                            strong_verticies[i] = True
+                            strong_verticies[j] = True
+                            strong_verticies[k] = True
+        return [self.vertex[idx] for idx, is_strong in enumerate(strong_verticies) if not is_strong]
