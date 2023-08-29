@@ -247,4 +247,3 @@ class TestWeakVertices(unittest.TestCase):
         graph.AddEdge(6,8)
         
         self.assertEqual(graph.WeakVertices(), [graph.vertex[7], graph.vertex[8]])
-
