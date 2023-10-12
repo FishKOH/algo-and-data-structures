@@ -8,10 +8,10 @@ public:
     };
     using TailStatus = HeadStatus;
     using PutRightStatus = HeadStatus;
-    using PutLefttStatus = HeadStatus;
-    using RemoveStatus = HeadStatus; // для удобства пользователя: Ok_RemovedLastNode
+    using PutLeftStatus = HeadStatus;
+    using RemoveStatus = HeadStatus; // для удобства пользователя можно добавить статус: Ok_RemovedLastNode
     using ReplaceStatus = HeadStatus;
-    using FindStatus = HeadStatus; // для удобства пользователя: Ok_NotFound
+    using FindStatus = HeadStatus; // для удобства пользователя можно добавить статус: Ok_NotFound
     using GetStatus = HeadStatus;
 
     enum class RightStatus {
@@ -103,10 +103,22 @@ public:
     virtual HeadStatus get_head_status() const = 0;
     virtual TailStatus get_tail_status() const = 0;
     virtual PutRightStatus get_put_right_status() const = 0;
-    virtual PutLefttStatus get_put_left_status() const = 0;
+    virtual PutLeftStatus get_put_left_status() const = 0;
     virtual RemoveStatus get_remove_status() const = 0;
     virtual ReplaceStatus get_replace_status() const = 0;
     virtual FindStatus get_find_status() const = 0;
     virtual GetStatus get_get_status() const = 0;
     virtual RightStatus get_right_status() const = 0;
 };
+
+/*
+2.2. Операция tail не сводима к другим операциям(если исходить из эффективной реализации). 
+Данная операция устанавливает курсор на последний узел за O(1) по времени, 
+а без этой операции установка курсора на последний узел будет производиться за O(N) по времени 
+посредством вызова операции right
+
+2.3. Операция поиска всех узлов с заданным значением, выдающая список таких узлов, уже не нужна. 
+Вместо этого можно установить курсор на первый узел операцией head, и далее применяя операцию find(значение), 
+будут найдены все значения. 
+Для удобства пользователя можно расширить статус операции find, статусом NotFound, чтобы легко обнаружить факт окончания поиска.
+*/
