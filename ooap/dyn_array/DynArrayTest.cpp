@@ -4,7 +4,7 @@
 
 using namespace dyn_array;
 
-TEST_CASE("linked dynArray")
+TEST_CASE("DynArray")
 {
     DynArray<int> dynArray;
     CHECK(dynArray.size() == 0);
