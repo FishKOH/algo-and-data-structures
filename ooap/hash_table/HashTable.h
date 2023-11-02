@@ -34,6 +34,8 @@ public:
     // ЗАПРОСЫ:
     virtual bool has(T value) const = 0;
 
+    virtual unsigned int size() const = 0;
+
     //ЗАПРОСЫ-СТАТУСЫ:
 
     virtual PutStatus getPutStatus() const = 0;
@@ -44,10 +46,10 @@ template <class T>
 class HashTable : public AbstractHashTable<T> {
 public:
     HashTable(unsigned int maxSize)
-        : size_(maxSize)
-        , storage_(new std::optional<T>[size_])
+        : maxSize_(maxSize)
+        , storage_(new std::optional<T>[maxSize_])
     {
-        hashFun_ = [size = size_](T value) {
+        hashFun_ = [size = maxSize_](T value) {
             return std::hash<T> {}(value) % size;
         };
     }
@@ -79,6 +81,16 @@ public:
         return find_(value).has_value();
     }
 
+    unsigned int size() const override
+    {
+        unsigned int valuesCount = 0;
+        for (unsigned int i = 0; i < maxSize_; ++i) {
+            if (storage_[i].has_value())
+                ++valuesCount;
+        }
+        return valuesCount;
+    }
+
     PutStatus getPutStatus() const override
     {
         return putStatus_;
@@ -93,10 +105,10 @@ private:
     {
         unsigned int index = hashFun_(value);
 
-        for (unsigned int i = 0; i < size_; ++i) {
+        for (unsigned int i = 0; i < maxSize_; ++i) {
             if (not storage_[index].has_value())
                 return index;
-            index = (index + step_) % size_;
+            index = (index + step_) % maxSize_;
         }
         return std::nullopt;
     }
@@ -105,18 +117,18 @@ private:
     {
         unsigned int index = hashFun_(value);
 
-        for (unsigned int i = 0; i < size_; ++i) {
+        for (unsigned int i = 0; i < maxSize_; ++i) {
             if (not storage_[index].has_value())
                 return std::nullopt;
             if (storage_[index].value() == value)
                 return index;
-            index = (index + step_) % size_;
+            index = (index + step_) % maxSize_;
         }
         return std::nullopt;
     }
 
-private:
-    unsigned int size_ = 0;
+protected:
+    unsigned int maxSize_ = 0;
     unsigned int step_ = 1;
     std::optional<T>* storage_ = nullptr;
 

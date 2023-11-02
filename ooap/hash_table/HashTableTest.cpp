@@ -12,10 +12,12 @@ TEST_CASE("HashTable::simple case")
     hashTable.put("same string");
     CHECK(hashTable.has("same string") == true);
     CHECK(hashTable.getPutStatus() == PutStatus::Ok);
+    CHECK(hashTable.size() == 1);
 
     hashTable.remove("same string");
     CHECK(hashTable.has("same string") == false);
     CHECK(hashTable.getRemoveStatus() == RemoveStatus::Ok);
+    CHECK(hashTable.size() == 0);
 }
 
 TEST_CASE("HashTable::complex case")
@@ -36,4 +38,6 @@ TEST_CASE("HashTable::complex case")
 
     hashTable.remove("another string");
     CHECK(hashTable.getRemoveStatus() == RemoveStatus::HasNotValue);
+
+    CHECK(hashTable.size() == 3);
 }
