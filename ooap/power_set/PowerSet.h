@@ -2,18 +2,6 @@
 
 namespace power_set {
 
-enum class PutStatus {
-    NotCalled,
-    Ok,
-    HasNotEmptySlot
-};
-
-enum class RemoveStatus {
-    NotCalled,
-    Ok,
-    HasNotValue
-};
-
 template <class T>
 class AbstractPowerSet : public hash_table::AbstractHashTable<T> {
 public:
